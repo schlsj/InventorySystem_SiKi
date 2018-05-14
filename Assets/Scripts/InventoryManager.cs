@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -17,6 +18,8 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    private List<Item> listItem;
+
     void Start()
     {
         ParseItemsFromJson();
@@ -24,6 +27,7 @@ public class InventoryManager : MonoBehaviour
 
     void ParseItemsFromJson()
     {
+        listItem = new List<Item>();
         TextAsset textAsset = Resources.Load<TextAsset>("Items");
         string strJson = textAsset.text;
         JSONObject rootJson = new JSONObject(strJson);
@@ -48,7 +52,19 @@ public class InventoryManager : MonoBehaviour
                         sprite, hp, mp);
                     break;
             }
-            print(item.Id + " " + item.Name + " " + item.Description + " " + item.Quality);
+            listItem.Add(item);
         }
+    }
+
+    public Item GetItemById(int id)
+    {
+        foreach (var item in listItem)
+        {
+            if (item.Id == id)
+            {
+                return item;
+            }
+        }
+        return null;
     }
 }
