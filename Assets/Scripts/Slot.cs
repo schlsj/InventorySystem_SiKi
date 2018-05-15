@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 {
 
     public GameObject prefabItem;
@@ -49,4 +50,21 @@ public class Slot : MonoBehaviour
 	void Update () {
 		
 	}
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (transform.childCount != 0)
+        {
+            string toolTipContent = transform.GetChild(0).GetComponent<ItemUI>().Item.GetDescription();
+            InventoryManager.Instance.ShowToolTip(toolTipContent);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (transform.childCount != 0)
+        {
+            InventoryManager.Instance.HideToolTip();
+        }
+    }
 }

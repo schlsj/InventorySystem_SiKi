@@ -27,4 +27,13 @@
         SellPrice = sellPrice;
         Sprite = sprite;
     }
+
+    /// <summary>
+    /// 这里难道不是显示description吗？
+    /// </summary>
+    /// <returns></returns>
+    public virtual string GetDescription()
+    {
+        return Description;
+    }
 }
