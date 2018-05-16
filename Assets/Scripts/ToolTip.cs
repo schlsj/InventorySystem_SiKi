@@ -35,8 +35,8 @@ public class ToolTip : MonoBehaviour
 
     public void Show(string content)
     {
-        txtToolTip.text = content;
-        txtContent.text = content;
+        txtToolTip.text = content;//.Replace("\\n","\n");
+        txtContent.text = content;//.Replace("\\n", "\n");
         targetAlpha = 1;
     }
 

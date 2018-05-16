@@ -10,4 +10,9 @@
         HP = hp;
         MP = mp;
     }
+
+    public override string GetTooltip()
+    {
+        return string.Format("{0}\n加血:{1}  加蓝:{2}", base.GetTooltip(), HP, MP);
+    }
 }

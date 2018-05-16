@@ -1,4 +1,6 @@
-﻿public class Weapon :Item
+﻿using System;
+
+public class Weapon :Item
 {
 
     public int Damage { get; set; }
@@ -10,5 +12,22 @@
     {
         Damage = damage;
         WeaponType = weaponType;
+    }
+
+    public override string GetTooltip()
+    {
+        string weaponType = "";
+        switch (WeaponType)
+        {
+            case WeaponType.Main:
+                weaponType = "双手";
+                break;
+            case WeaponType.OffHand:
+                weaponType = "单手";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        return string.Format("{0}\n 类型：{1}  伤害：{2}", base.GetTooltip(), weaponType, Damage);
     }
 }

@@ -15,6 +15,7 @@ public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
             GameObject goItem = Instantiate(prefabItem);
             goItem.transform.SetParent(transform);
             goItem.transform.localPosition = Vector3.zero;
+            goItem.transform.localScale=Vector3.one;
             goItem.GetComponent<ItemUI>().Init(item);
         }
         else
@@ -55,7 +56,7 @@ public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     {
         if (transform.childCount != 0)
         {
-            string toolTipContent = transform.GetChild(0).GetComponent<ItemUI>().Item.GetDescription();
+            string toolTipContent = transform.GetChild(0).GetComponent<ItemUI>().Item.GetTooltip();
             InventoryManager.Instance.ShowToolTip(toolTipContent);
         }
     }

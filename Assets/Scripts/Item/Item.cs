@@ -1,4 +1,6 @@
-﻿public class Item  {
+﻿using System;
+
+public class Item  {
     public int Id { get; set; }
     public string Name { get; set; }
     public ItemType ItemType { get; set; }
@@ -32,8 +34,32 @@
     /// 这里难道不是显示description吗？
     /// </summary>
     /// <returns></returns>
-    public virtual string GetDescription()
+    public virtual string GetTooltip()
     {
-        return Description;
+        string strColor = "";
+        switch (Quality)
+        {
+            case ItemQuality.Common:
+                strColor = "lime";
+                break;
+            case ItemQuality.Rare:
+                strColor = "navy";
+                break;
+            case ItemQuality.Epic:
+                strColor = "magenta";
+                break;
+            case ItemQuality.Legendary:
+                strColor = "orange";
+                break;
+            case ItemQuality.Artifact:
+                strColor = "red";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        string tooltip = string.Format("<size=16><color={0}>{1}</color></size>\n购买价格:{2}  卖出价格:{3}\n{4}",
+            strColor, Name, BuyPrice, SellPrice, Description);
+        return tooltip;
     }
 }

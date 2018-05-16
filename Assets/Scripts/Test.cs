@@ -15,7 +15,7 @@ public class Test : MonoBehaviour {
 	void Update () {
 	    if (Input.GetKeyUp(KeyCode.A))
 	    {
-	        int id = Random.Range(1, 2);
+	        int id = Random.Range(1, 18);
 	        Knapsack.Instance.StoreItem(id);
 	    }	
 	}

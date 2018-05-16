@@ -44,13 +44,13 @@ public class ItemUI : MonoBehaviour {
         Amount = amount;
         //更新UI显示
         ItemImage.sprite = Resources.Load<Sprite>(item.Sprite);
-        AmountText.text = Amount.ToString();
+        AmountText.text = item.Capacity>1?Amount.ToString():"";
     }
 
     public void AddAmount(int increment=1)
     {
         Amount += increment;
-        AmountText.text = Amount.ToString();
+        AmountText.text = Item.Capacity > 1 ? Amount.ToString() : "";
         //更新UI显示
     }
 }

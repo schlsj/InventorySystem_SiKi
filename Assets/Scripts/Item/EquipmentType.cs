@@ -5,8 +5,8 @@
     Leg,
     Bracer,
     Boots,
-    Trinket,
     Shoulder,
     Belt,
     OffHand,
+    Chest
 }

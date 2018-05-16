@@ -43,7 +43,7 @@ public class InventoryManager : MonoBehaviour
             string name = sonJson["Name"].str;
             ItemType itemType = (ItemType) Enum.Parse(typeof(ItemType), sonJson["ItemType"].str);
             ItemQuality quality = (ItemQuality) Enum.Parse(typeof(ItemQuality), sonJson["Quality"].str);
-            string description = sonJson["Description"].str;
+            string description = sonJson["Description"].str.Replace("\\n", "\n");
             int capacity = (int) sonJson["Capacity"].n;
             int buyPrice = (int) sonJson["BuyPrice"].n;
             int sellPrice = (int) sonJson["SellPrice"].n;
@@ -56,6 +56,26 @@ public class InventoryManager : MonoBehaviour
                     int mp = (int) sonJson["MP"].n;
                     item = new Consumable(id, name, itemType, quality, description, capacity, buyPrice, sellPrice,
                         sprite, hp, mp);
+                    break;
+                case ItemType.Equipment:
+                    int strength = (int) sonJson["Strength"].n;
+                    int intelligent = (int)sonJson["Intellect"].n;
+                    int agility = (int)sonJson["Agility"].n;
+                    int stamina = (int)sonJson["Stamina"].n;
+                    EquipmentType equipmentType =
+                        (EquipmentType) Enum.Parse(typeof(EquipmentType), sonJson["EquipmentType"].str);
+                    item = new Equipment(id, name, itemType, quality, description, capacity, buyPrice, sellPrice,
+                        sprite, strength, intelligent, agility, stamina, equipmentType);
+                    break;
+                case ItemType.Weapon:
+                    int damage = (int) sonJson["Damage"].n;
+                    WeaponType weaponType = (WeaponType) Enum.Parse(typeof(WeaponType), sonJson["WeaponType"].str);
+                    item = new Weapon(id, name, itemType, quality, description, capacity, buyPrice, sellPrice,
+                        sprite, damage, weaponType);
+                    break;
+                case ItemType.Material:
+                    item =new Material(id, name, itemType, quality, description, capacity, buyPrice, sellPrice,
+                        sprite);
                     break;
             }
             listItem.Add(item);
