@@ -24,11 +24,30 @@ public class InventoryManager : MonoBehaviour
     private Canvas canvas;
     private Vector2 toolTipOffset = new Vector2(7, -6);
 
+    #region  pickedItem
+
+    private bool isPickedItem = false;
+
+    public bool IsPickedItem
+    {
+        get { return isPickedItem;}
+        //set { isPickedItem = value; }
+    }
+
+    private ItemUI pickedItemUI;
+
+    public ItemUI PickedItemUI
+    {
+        get { return pickedItemUI;}   
+    }
+    #endregion
+
     void Start()
     {
         ParseItemsFromJson();
         toolTip = GameObject.FindObjectOfType<ToolTip>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        pickedItemUI = GameObject.Find("PickedItem").GetComponent<ItemUI>();
     }
 
     void ParseItemsFromJson()
@@ -96,15 +115,26 @@ public class InventoryManager : MonoBehaviour
 
     public void Update()
     {
-        //忘了游戏是怎么显示了，但是在unity3d里面，一旦tooltip出来了，显示位置是不会出现了的。
-        //并且显示位置要第一个鼠标的高度，避免与鼠标重叠
-        //如果要显示的内容超出屏幕外了又要怎么处理？
-        if (isToolTipShow)
+        if (isPickedItem)
         {
+            Vector2 targetItemUIPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
+                Input.mousePosition, null, out targetItemUIPosition);
+            pickedItemUI.transform.localPosition=targetItemUIPosition;
+        }else if (isToolTipShow)
+        {
+            //忘了游戏是怎么显示了，但是在unity3d里面，一旦tooltip出来了，显示位置是不会出现了的。
+            //并且显示位置要第一个鼠标的高度，避免与鼠标重叠
+            //如果要显示的内容超出屏幕外了又要怎么处理？
             Vector2 targetTooltipPosition;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
                 Input.mousePosition, null, out targetTooltipPosition);
             toolTip.SetPosition(targetTooltipPosition+toolTipOffset);
+        }
+        if(isPickedItem && Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1))
+        {
+            isPickedItem = false;
+            PickedItemUI.Hide();
         }
     }
 
@@ -118,5 +148,23 @@ public class InventoryManager : MonoBehaviour
     {
         isToolTipShow = false;
         toolTip.Hide();  
+    }
+
+    public void PickedItem(Item item, int amount)
+    {
+        pickedItemUI.Set(item, amount);
+        isPickedItem = true;
+        pickedItemUI.Show();
+        HideToolTip();
+    }
+
+    public void PlacedItem(int amount=1)
+    {
+        pickedItemUI.ReduceAmount(amount);
+        if (PickedItemUI.Amount <= 0)
+        {
+            isPickedItem = false;
+            pickedItemUI.Hide();
+        }
     }
 }

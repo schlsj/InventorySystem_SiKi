@@ -38,19 +38,68 @@ public class ItemUI : MonoBehaviour {
     }
 #endregion
 
-    public void Init(Item item, int amount = 1)
+    public Vector3 AnimationScale = new Vector3(1.4f, 1.4f, 1.4f);
+    public int SmoothSpeed = 20;
+
+    void Update()
+    {
+        if (transform.localScale.x != 1.0f)
+        {
+            float targetScale = Mathf.Lerp(transform.localScale.x, 1.0f, Time.deltaTime * SmoothSpeed);
+            transform.localScale = new Vector3(targetScale, targetScale, targetScale);
+            if (Mathf.Abs(transform.localScale.x - 1.0f) < 0.05f)
+            {
+                transform.localScale=Vector3.one;
+            }
+        }
+    }
+
+    public void Set(Item item, int amount = 1)
     {
         Item = item;
         Amount = amount;
         //更新UI显示
         ItemImage.sprite = Resources.Load<Sprite>(item.Sprite);
         AmountText.text = item.Capacity>1?Amount.ToString():"";
+        transform.localScale = AnimationScale;
     }
+
 
     public void AddAmount(int increment=1)
     {
         Amount += increment;
         AmountText.text = Item.Capacity > 1 ? Amount.ToString() : "";
         //更新UI显示
+        transform.localScale = AnimationScale;
+    }
+
+    public void SetAmount(int amount)
+    {
+        Amount = amount;
+        AmountText.text = Item.Capacity > 1 ? Amount.ToString() : "";
+        transform.localScale = AnimationScale;
+    }
+
+    public void ReduceAmount(int reduction=1)
+    {
+        Amount -= reduction;
+        AmountText.text = Item.Capacity > 1 ? Amount.ToString() : "";
+        //更新UI显示
+        transform.localScale = AnimationScale;
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void SetLocalPosition(Vector3 position)
+    {
+        transform.position = position;
     }
 }
