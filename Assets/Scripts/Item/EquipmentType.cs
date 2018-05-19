@@ -1,4 +1,5 @@
 ﻿public enum EquipmentType  {
+    None,
     Head,
     Neck,
     Ring,

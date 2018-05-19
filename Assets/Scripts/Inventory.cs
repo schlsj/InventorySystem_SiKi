@@ -5,16 +5,27 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 
-    private Slot[] arrSlot;
+    protected Slot[] arrSlot;
+    private CanvasGroup canvasGroup;
+    private float targetAlpha = 1;
+    public int HideSpeed = 8;
 	// Use this for initialization
-	public virtual void Start ()
-	{
-	    arrSlot = GetComponentsInChildren<Slot>();
-	}
-	
-	// Update is called once per frame
+    public virtual void Start()
+    {
+        arrSlot = GetComponentsInChildren<Slot>();
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    // Update is called once per frame
 	void Update () {
-		
+        if (canvasGroup.alpha != targetAlpha)
+        {
+            canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, targetAlpha, Time.deltaTime * HideSpeed);
+            if (Mathf.Abs(canvasGroup.alpha - targetAlpha) < 0.01f)
+            {
+                canvasGroup.alpha = targetAlpha;
+            }
+        }	
 	}
 
     public bool StoreItem(int id)
@@ -83,5 +94,19 @@ public class Inventory : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void DisplaySwitch()
+    {
+        if (targetAlpha == 1)
+        {
+            targetAlpha = 0;
+            canvasGroup.blocksRaycasts = false;
+        }
+        else
+        {
+            targetAlpha = 1;
+            canvasGroup.blocksRaycasts = true;
+        }
     }
 }

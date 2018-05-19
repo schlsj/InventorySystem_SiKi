@@ -64,6 +64,14 @@ public class ItemUI : MonoBehaviour {
         transform.localScale = AnimationScale;
     }
 
+    public void Exchange(ItemUI changed)
+    {
+        Item middleItem = changed.Item;
+        int middleAmount = changed.Amount;
+        changed.Set(Item, Amount);
+        Set(middleItem, middleAmount);
+    }
+
 
     public void AddAmount(int increment=1)
     {

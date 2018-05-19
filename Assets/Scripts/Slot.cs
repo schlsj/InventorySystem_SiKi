@@ -8,7 +8,7 @@ public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPoin
 {
 
     public GameObject prefabItem;
-    private ItemUI itemUI;
+    protected ItemUI itemUI;
 
     public void Store(Item item)
     {
@@ -72,8 +72,23 @@ public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPoin
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
+        if (!InventoryManager.Instance.IsPickedItem&&eventData.button == PointerEventData.InputButton.Right)
+        {
+            Item item = itemUI.Item;
+            if (item is Equipment || item is Weapon)
+            {
+                InventoryManager.Instance.HideToolTip();
+                DestroyImmediate(itemUI.gameObject);
+                CharacterPanel.Instance.DressItem(item);
+            }
+            return;
+        }
+        if (eventData.button != PointerEventData.InputButton.Left)
+        {
+            return;
+        }
         //1 被点击的Slot上没有ItemUI；
         //1.a 鼠标上挂有PickedItemUI； 
         //1.a.1 ctrl按下，一次放置一个物品;                            END1!
@@ -148,10 +163,7 @@ public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPoin
                 }
                 else
                 {
-                    var tempItem = itemUI.Item;
-                    var tempAmount = itemUI.Amount;
-                    itemUI.Set(InventoryManager.Instance.PickedItemUI.Item, InventoryManager.Instance.PickedItemUI.Amount);
-                    InventoryManager.Instance.PickedItemUI.Set(tempItem, tempAmount);
+                    InventoryManager.Instance.PickedItemUI.Exchange(itemUI);
                 }
             }
         }
