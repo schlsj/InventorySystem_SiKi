@@ -172,4 +172,27 @@ public class InventoryManager : MonoBehaviour
             pickedItemUI.Hide();
         }
     }
+
+    public void Save()
+    {
+        KnapsackPanel.Instance.SaveInventory();
+        ChestPanel.Instance.SaveInventory();
+        CharacterPanel.Instance.SaveInventory();
+        ForgePanel.Instance.SaveInventory();
+        Test test = GameObject.FindGameObjectWithTag("Player").GetComponent<Test>();
+        PlayerPrefs.SetString("Coin", test.Coin.ToString());
+    }
+
+    public void Load()
+    {
+        KnapsackPanel.Instance.LoadInventory();
+        ChestPanel.Instance.LoadInventory();
+        CharacterPanel.Instance.LoadInventory();
+        ForgePanel.Instance.LoadInventory();
+        if (PlayerPrefs.HasKey("Coin"))
+        {
+            Test test = GameObject.FindGameObjectWithTag("Player").GetComponent<Test>();
+            test.Coin = Int32.Parse(PlayerPrefs.GetString("Coin"));
+        }
+    }
 }

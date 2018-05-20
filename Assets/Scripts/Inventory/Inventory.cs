@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -107,6 +109,49 @@ public class Inventory : MonoBehaviour
         {
             targetAlpha = 1;
             canvasGroup.blocksRaycasts = true;
+        }
+    }
+
+    public void SaveInventory()
+    {
+        StringBuilder info = new StringBuilder();
+        foreach (KnapsackSlot slot in ArrKnapsackSlot)
+        {
+            if (slot.transform.childCount == 0)
+            {
+                info.Append("0-");
+            }
+            else
+            {
+                ItemUI itemUI = slot.transform.GetChild(0).GetComponent<ItemUI>();
+                info.Append(string.Format("{0},{1}-", itemUI.Item.Id, itemUI.Amount));
+            }
+        }
+        PlayerPrefs.SetString(this.gameObject.name, info.ToString());
+    }
+
+    public void LoadInventory()
+    {
+        if (!PlayerPrefs.HasKey(gameObject.name))
+        {
+            return;
+        }
+        string info = PlayerPrefs.GetString(gameObject.name);
+        string[] arrItem = info.Split('-');
+        for (int i = 0; i < arrItem.Length; i++)
+        {
+            if (string.IsNullOrEmpty(arrItem[i]) || arrItem[i] == "0")
+            {
+                continue;
+            }
+            string[] arrItemInfo = arrItem[i].Split(',');
+            int itemId = Int32.Parse(arrItemInfo[0]);
+            int itemAmount = Int32.Parse(arrItemInfo[1]);
+            Item item = InventoryManager.Instance.GetItemById(itemId);
+            for (int j = 0; j < itemAmount; j++)
+            {
+                ArrKnapsackSlot[i].Store(item);
+            }
         }
     }
 }

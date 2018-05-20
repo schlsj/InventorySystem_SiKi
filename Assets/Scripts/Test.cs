@@ -37,12 +37,24 @@ public class Test : MonoBehaviour
 #endregion
 
     private int coin=100;
+
+    public int Coin
+    {
+        get { return coin; }
+        set
+        {
+            coin = value;
+            txtCoin.text = coin.ToString();
+        }
+    }
+
     private Text txtCoin;
 
     // Use this for initialization
     void Start ()
     {
         txtCoin = GameObject.Find("ImgCoin").GetComponentInChildren<Text>();
+        txtCoin.text = coin.ToString();
     }
 	
 	// Update is called once per frame
