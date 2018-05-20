@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler
+public class KnapsackSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler
 {
 
     public GameObject prefabItem;

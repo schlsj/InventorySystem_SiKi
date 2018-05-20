@@ -25,13 +25,14 @@ public class CharacterPanel : Inventory {
         base.Start();
         //infoText = transform.Find("PropertyPanel\\Text").GetComponent<Text>();//错的！！！
         infoText = transform.Find("PropertyPanel/Text").GetComponent<Text>();
+        DisplaySwitch();
     }
 
     public void DressItem(Item item)
     {
-        foreach (var slot in arrSlot)
+        foreach (var slot in ArrKnapsackSlot)
         {
-            if (((EquipmentSlot)slot).CanShipItem(item))
+            if (((CharacterSlot)slot).CanShipItem(item))
             {
                 if (slot.transform.childCount == 0)
                 {
@@ -40,7 +41,7 @@ public class CharacterPanel : Inventory {
                 else
                 {
                     slot.transform.GetChild(0).GetComponent<ItemUI>().Set(item);
-                    Knapsack.Instance.StoreItem(item);
+                    KnapsackPanel.Instance.StoreItem(item);
                     InventoryManager.Instance.ShowToolTip(item.GetTooltip());
                 }
                 UpdateInfo();
@@ -57,7 +58,7 @@ public class CharacterPanel : Inventory {
         int aligity = test.BasicAligity;
         int stamina = test.BasicStamina;
         int damage = test.BasicDamage;
-        foreach (Slot slot in arrSlot)
+        foreach (KnapsackSlot slot in ArrKnapsackSlot)
         {
             if (slot.transform.childCount!=0)
             {

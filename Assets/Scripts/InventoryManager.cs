@@ -42,9 +42,13 @@ public class InventoryManager : MonoBehaviour
     }
     #endregion
 
-    void Start()
+    void Awake()
     {
         ParseItemsFromJson();
+    }
+
+    void Start()
+    {
         toolTip = GameObject.FindObjectOfType<ToolTip>();
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         pickedItemUI = GameObject.Find("PickedItem").GetComponent<ItemUI>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EquipmentSlot : Slot {
+public class CharacterSlot : KnapsackSlot {
 
     public EquipmentType EquipmentType;
     public WeaponType WeaponType;
@@ -16,7 +16,7 @@ public class EquipmentSlot : Slot {
             Item tempItem = itemUI.Item;
             DestroyImmediate(itemUI.gameObject);
             CharacterPanel.Instance.UpdateInfo();
-            Knapsack.Instance.StoreItem(tempItem);
+            KnapsackPanel.Instance.StoreItem(tempItem);
             InventoryManager.Instance.HideToolTip();
         }
         if (eventData.button != PointerEventData.InputButton.Left)
@@ -44,7 +44,7 @@ public class EquipmentSlot : Slot {
         else
         {
             InventoryManager.Instance.PickedItem(itemUI.Item, itemUI.Amount);
-            Destroy(itemUI.gameObject);
+            DestroyImmediate(itemUI.gameObject);
             needUpdateCharaterInfo = true;
         }
         if (needUpdateCharaterInfo)

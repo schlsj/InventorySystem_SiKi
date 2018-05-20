@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Knapsack : Inventory
-{
-    private static Knapsack _instance;
+public class ChestPanel : Inventory {
+    private static ChestPanel _instance;
 
-    public static Knapsack Instance
+    public static ChestPanel Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance=GameObject.Find("KnapsackPanel").GetComponent<Knapsack>();
+                _instance = GameObject.Find("ChestPanel").GetComponent<ChestPanel>();
             }
             return _instance;
         }
